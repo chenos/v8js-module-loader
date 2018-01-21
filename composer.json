@@ -1,0 +1,19 @@
+{
+    "name": "chenos/v8js-module-loader",
+    "require": {
+        "webmozart/path-util": "^2.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Chenos\\V8Js\\ModuleLoader\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Chenos\\V8Js\\ModuleLoader\\Tests\\": "tests"
+        }
+    }
+}
