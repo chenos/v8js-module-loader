@@ -5,6 +5,10 @@
 - PHP 7.0+
 - V8Js extension 2.0+
 
+## Dependents
+
+[chenos/v8js-parser](https://github.com/chenos/v8js-parser)
+
 ## Example
 
 ```php
