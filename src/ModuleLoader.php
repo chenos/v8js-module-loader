@@ -6,7 +6,7 @@ class ModuleLoader
 {
     protected $fs;
 
-    protected $root;
+    protected $entryDir;
 
     protected $overrides = [];
 
@@ -18,10 +18,20 @@ class ModuleLoader
 
     protected $pathCache = [];
 
-    public function __construct($root, FileSystemInterface $fs = null)
+    public function __construct($entryDir, FileSystemInterface $filesystem = null)
     {
-        $this->root = $root;
-        $this->fs = $fs instanceof FileSystemInterface ? $fs : new FileSystem();
+        $this->entryDir = $entryDir;
+        $this->fs = $filesystem instanceof FileSystemInterface ? $filesystem : new FileSystem();
+    }
+
+    public function setFileSystem($filesystem)
+    {
+        $this->fs = $filesystem;
+    }
+
+    public function setEntryDirectory($entryDir)
+    {
+        $this->entryDir = $entryDir;
     }
 
     public function setExtensions(...$extensions)
@@ -33,15 +43,15 @@ class ModuleLoader
     {
         if (func_num_args() == 1 && is_array($name)) {
             $this->overrides = array_merge($this->overrides, $name);
-        } elseif (func_num_args() == 2) {
+        } else {
             $this->overrides[$name] = $override;
         }
     }
 
-    public function addModulesDirectory($modulesDirectory)
+    public function addVendorDirectory(...$modulesDirectories)
     {
         $this->modulesDirectories = array_merge(
-            $this->modulesDirectories, (array) $modulesDirectory);
+            $this->modulesDirectories, $modulesDirectories);
     }
 
     public function normaliseIdentifier($base, $moduleName)
@@ -68,7 +78,7 @@ class ModuleLoader
         } elseif (strpos($base, '/') === 0) {
             $file = $this->getModuleFile($this->fs->pathJoin($base, $moduleName));
         } else {
-            $file = $this->getModuleFile($this->fs->pathJoin($this->root, $base, $moduleName));
+            $file = $this->getModuleFile($this->fs->pathJoin($this->entryDir, $base, $moduleName));
         }
 
         if (! $file) {

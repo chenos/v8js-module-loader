@@ -196,9 +196,7 @@ class ModuleLoaderTest extends TestCase
 
         $module = new \stdClass;
 
-        $loader->addOverride('vue', function () use ($module) {
-            return $module;
-        });
+        $loader->addOverride('vue', $module);
 
         $this->assertExamples($loader, [
             ['', 'vue', '', 'vue'],
@@ -252,10 +250,10 @@ class ModuleLoaderTest extends TestCase
         ]);
     }
 
-    protected function newModuleLoader($paths, $modulePaths = ['/node_modules'], $rootPath = '/app')
+    protected function newModuleLoader($paths, $vendorDir = ['/node_modules'], $entryDir = '/app')
     {
-        $loader = new ModuleLoader($rootPath, new FileSystem($paths));
-        $loader->addModulesDirectory($modulePaths);
+        $loader = new ModuleLoader($entryDir, new FileSystem($paths));
+        $loader->addVendorDirectory(...$vendorDir);
 
         return $loader;
     }
