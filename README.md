@@ -5,6 +5,12 @@
 - PHP 7.0+
 - V8Js extension 2.0+
 
+## Installation
+
+```sh
+composer require chenos/v8js-module-loader
+```
+
 ## Dependents
 
 [chenos/v8js-parser](https://github.com/chenos/v8js-parser)
