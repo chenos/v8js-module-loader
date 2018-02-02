@@ -92,7 +92,7 @@ class ModuleLoader
         }
 
         if (! $file) {
-            throw new \Exception("'$moduleName' does not exists.");
+            throw new FileNotFoundException("'$moduleName' module does not exists.");
         }
 
         return [$this->fs->dirname($file), $this->fs->filename($file)];

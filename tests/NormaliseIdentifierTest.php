@@ -2,8 +2,9 @@
 
 namespace Chenos\V8Js\ModuleLoader\Tests;
 
-use Chenos\V8Js\ModuleLoader\ModuleLoader;
 use PHPUnit\Framework\TestCase;
+use Chenos\V8Js\ModuleLoader\ModuleLoader;
+use Chenos\V8Js\ModuleLoader\FileNotFoundException;
 
 class NormaliseIdentifierTest extends TestCase
 {
@@ -164,6 +165,27 @@ class NormaliseIdentifierTest extends TestCase
     /**
      * @group override
      */
+    public function testModuleOverrideWithArrayArgs()
+    {
+        $loader = $this->newModuleLoader([
+            '/node_modules/vue/index.js' => '',
+            '/node_modules/vue/dist/vue.js' => '',
+        ]);
+
+        $loader->addOverride(['vue' => 'vue/dist/vue']);
+
+        $this->assertExamples($loader, [
+            ['', 'vue', '/node_modules/vue/dist', 'vue.js'],
+            ['./foo', 'vue', '/node_modules/vue/dist', 'vue.js'],
+            ['./foo/bar', 'vue', '/node_modules/vue/dist', 'vue.js'],
+            ['/app/foo', 'vue', '/node_modules/vue/dist', 'vue.js'],
+            ['/app/foo/bar', 'vue', '/node_modules/vue/dist', 'vue.js'],
+        ]);
+    }
+
+    /**
+     * @group override
+     */
     public function testModuleOverride2()
     {
         $loader = $this->newModuleLoader([
@@ -248,6 +270,44 @@ class NormaliseIdentifierTest extends TestCase
             ['/app/foo', 'vue', '/bower_components/vue', 'index.js'],
             ['/app/foo/bar', 'vue', '/bower_components/vue', 'index.js'],
         ]);
+    }
+
+    /**
+     * @group ModulesDirectory
+     */
+    public function testModules()
+    {
+        $loader = $this->newModuleLoader([]);
+
+        $this->assertExamples($loader, [
+            ['', 'vue', '', 'vue'],
+            ['./foo', 'vue', '', 'vue'],
+            ['./foo/bar', 'vue', '', 'vue'],
+            ['/app/foo', 'vue', '', 'vue'],
+            ['/app/foo/bar', 'vue', '', 'vue'],
+        ]);
+    }
+
+    public function testException()
+    {
+        $this->expectException(FileNotFoundException::class);
+        $this->expectExceptionMessage("'./app' module does not exists.");
+        $loader = $this->newModuleLoader([]);
+        $loader->normaliseIdentifier('', './app');
+    }
+
+    public function testSetEntryDirectory()
+    {
+        $loader = new ModuleLoader('/app1');
+        $loader->setEntryDirectory('/app2');
+        $this->assertAttributeEquals('/app2', 'entryDir', $loader);
+    }
+
+    public function testSetFileSystem()
+    {
+        $loader = new ModuleLoader('/app1');
+        $loader->setFileSystem($fs = new FileSystem);
+        $this->assertAttributeEquals($fs, 'fs', $loader);
     }
 
     protected function newModuleLoader($paths, $vendorDir = ['/node_modules'], $entryDir = '/app')

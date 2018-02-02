@@ -1,5 +1,8 @@
 <?php
 
+namespace Chenos\V8Js\ModuleLoader\Tests;
+
+use V8Js;
 use PHPUnit\Framework\TestCase;
 use Chenos\V8Js\ModuleLoader\ModuleLoader;
 
@@ -7,15 +10,15 @@ class ModuleLoaderTest extends TestCase
 {
     public function setUp()
     {
-        $loader = new ModuleLoader(__DIR__.'/javascript/entry');
+        $this->loader = new ModuleLoader(__DIR__.'/javascript/entry');
 
-        $loader->setExtensions('.js', '.json');
-        $loader->addVendorDirectory(__DIR__.'/javascript/node_modules');
+        $this->loader->setExtensions('.js', '.json');
+        $this->loader->addVendorDirectory(__DIR__.'/javascript/node_modules');
 
         $v8 = new V8Js();
 
-        $v8->setModuleNormaliser([$loader, 'normaliseIdentifier']);
-        $v8->setModuleLoader([$loader, 'loadModule']);
+        $v8->setModuleNormaliser([$this->loader, 'normaliseIdentifier']);
+        $v8->setModuleLoader([$this->loader, 'loadModule']);
 
         $this->v8 = $v8;
     }
