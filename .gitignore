@@ -1,3 +1,9 @@
-/examples
+/.env
+/examples2
 /vendor
 composer.lock
+composer.phar
+Dockerfile-local
+node_modules
+package-lock.json
+yarn.lock
