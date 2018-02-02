@@ -1,5 +1,7 @@
 # V8Js ModuleLoader
 
+[![Build Status](https://travis-ci.org/chenos/v8js-module-loader.svg?branch=master)](https://travis-ci.org/chenos/v8js-module-loader)
+
 ## Requirements
 
 - PHP 7.0+

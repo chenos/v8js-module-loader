@@ -18,6 +18,9 @@ services:
     build:
       context: ./docker/
       dockerfile: Dockerfile-${PHP_VERSION:-71}
+    environment:
+      TRAVIS: ${TRAVIS}
+      TRAVIS_JOB_ID: ${TRAVIS_JOB_ID}
     volumes:
       - ./:/var/www/html
     networks:

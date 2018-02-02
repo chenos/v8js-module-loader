@@ -4,7 +4,8 @@
         "webmozart/path-util": "^2.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.5"
+        "phpunit/phpunit": "^6.5",
+        "php-coveralls/php-coveralls": "^2.0"
     },
     "autoload": {
         "psr-4": {
@@ -15,5 +16,9 @@
         "psr-4": {
             "Chenos\\V8Js\\ModuleLoader\\Tests\\": "tests"
         }
+    },
+    "scripts": {
+        "test": "phpunit --colors=always",
+        "test-coverage": "phpunit --colors=always --coverage-clover clover.xml && php-coveralls -v"
     }
 }

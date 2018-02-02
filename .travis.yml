@@ -3,7 +3,7 @@ language: php
 services:
   - docker
 
-sudo: required
+sudo: false
 dist: trusty
 group: deprecated-2017Q4
 
