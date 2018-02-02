@@ -1,6 +1,6 @@
 # V8Js ModuleLoader
 
-[![Build Status](https://travis-ci.org/chenos/v8js-module-loader.svg?branch=master)](https://travis-ci.org/chenos/v8js-module-loader)
+[![Build Status](https://travis-ci.org/chenos/v8js-module-loader.svg?branch=master)](https://travis-ci.org/chenos/v8js-module-loader) [![Coverage Status](https://coveralls.io/repos/github/chenos/v8js-module-loader/badge.svg?branch=master)](https://coveralls.io/github/chenos/v8js-module-loader?branch=master)
 
 ## Requirements
 
