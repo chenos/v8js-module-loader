@@ -24,8 +24,7 @@ services:
       - backend
 
   node:
-    image: node:8.9.4-stretch
-    user: node
+    image: node
     working_dir: /var/www/html
     volumes:
       - ./:/var/www/html
