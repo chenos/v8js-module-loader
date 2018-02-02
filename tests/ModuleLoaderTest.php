@@ -12,8 +12,6 @@ class ModuleLoaderTest extends TestCase
         $loader->setExtensions('.js', '.json');
         $loader->addVendorDirectory(__DIR__.'/javascript/node_modules');
 
-        $loader->addOverride('vue', 'vue/dist/vue.runtime.common.js');
-
         $v8 = new V8Js();
 
         $v8->setModuleNormaliser([$loader, 'normaliseIdentifier']);
@@ -22,10 +20,20 @@ class ModuleLoaderTest extends TestCase
         $this->v8 = $v8;
     }
 
-    /**
-     */
-    public function test1()
+    public function testNestRequire()
     {
-        $this->assertEquals(true, true);
+        $this->assertOutputEquals("require('./fn')();", 'hello1hello2');
+    }
+
+    public function testJsonFile()
+    {
+        $this->assertOutputEquals("var foo = require('./foo.json'); print(foo.main)", 'foo.js');
+    }
+
+    protected function assertOutputEquals($expected, $actual, $message = '')
+    {
+        ob_start();
+        $this->v8->executeString($expected);
+        $this->assertEquals(ob_get_clean(), $actual, $message);
     }
 }
