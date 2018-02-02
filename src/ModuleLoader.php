@@ -10,7 +10,7 @@ class ModuleLoader
 
     protected $overrides = [];
 
-    protected $extensions = ['.js'];
+    protected $extensions = ['.js', '.json'];
 
     protected $nativeModules = [];
 

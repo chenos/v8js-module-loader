@@ -13,6 +13,10 @@
 composer require chenos/v8js-module-loader
 ```
 
+## Dependents
+
+- [chenos/v8js-extended](https://github.com/chenos/v8js-extended)
+
 ## Testing
 
 ```
@@ -27,7 +31,29 @@ make example
 
 Access http://127.0.0.1:8888
 
-## Dependents
+## Usage
 
-- [chenos/v8js-parser](https://github.com/chenos/v8js-parser)
+```php
+use Chenos\V8Js\ModuleLoader\ModuleLoader;
 
+$loader = new ModuleLoader(__DIR__);
+
+$loader->setExtensions('.js', '.json');
+
+// array
+$loader->addOverride(['vue' => 'vue/dist/vue.runtime.common.js']);
+
+// key, value
+$loader->addOverride('vue', 'vue/dist/vue.runtime.common.js');
+
+// v8js version > 2.1.0+
+$loader->addOverride(['fn' => function (...$args) {}]);
+$loader->addOverride('obj', new stdClass());
+
+$loader->addVendorDirectory(__DIR__.'/node_modules', __DIR__.'/bower_components');
+
+$v8 = new V8Js();
+
+$v8->setModuleNormaliser([$loader, 'normaliseIdentifier']);
+$v8->setModuleLoader([$loader, 'loadModule']);
+```
