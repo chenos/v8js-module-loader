@@ -21,3 +21,5 @@ RUN docker-php-ext-enable v8js
 
 RUN curl -s http://getcomposer.org/installer | php && \
     mv composer.phar /usr/local/bin/composer
+
+RUN pecl install xdebug && docker-php-ext-enable xdebug
