@@ -15,7 +15,7 @@ composer require chenos/v8js-module-loader
 
 ## Dependents
 
-- [chenos/v8js-extended](https://github.com/chenos/v8js-extended)
+- [chenos/v8js-parser](https://github.com/chenos/v8js-parser)
 
 ## Testing
 
@@ -36,6 +36,7 @@ Access http://127.0.0.1:8888
 ```php
 use Chenos\V8Js\ModuleLoader\ModuleLoader;
 
+// entry directory
 $loader = new ModuleLoader(__DIR__);
 
 $loader->setExtensions('.js', '.json');

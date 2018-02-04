@@ -288,6 +288,32 @@ class NormaliseIdentifierTest extends TestCase
         ]);
     }
 
+    public function testLoadModule()
+    {
+        $loader = $this->newModuleLoader([
+            '/app/foo.js' => 'foo',
+            '/app/bar.js' => 'bar',
+        ]);
+
+        $this->assertEquals('foo', $loader->loadModule('/app/foo.js'));
+        $this->assertEquals('foo', $loader->loadModule('./foo.js', false));
+        $this->assertEquals('bar', $loader->loadModule('/app/bar.js'));
+        $this->assertEquals('bar', $loader->loadModule('./bar.js', false));
+    }
+
+    public function testLoadModuleException()
+    {
+        $loader = $this->newModuleLoader([
+            '/app/foo.js' => 'foo',
+            '/app/bar.js' => 'bar',
+        ]);
+
+        $this->expectException(FileNotFoundException::class);
+        $this->expectExceptionMessage("'./baz.js' module does not exists.");
+
+        $this->assertFalse($loader->loadModule('./baz.js', false));
+    }
+
     public function testException()
     {
         $this->expectException(FileNotFoundException::class);

@@ -98,8 +98,12 @@ class ModuleLoader
         return [$this->fs->dirname($file), $this->fs->filename($file)];
     }
 
-    public function loadModule($moduleName)
+    public function loadModule($moduleName, $normalise = true)
     {
+        if (! $normalise) {
+            $moduleName = implode('/', $this->normaliseIdentifier('', $moduleName));
+        }
+
         if (! isset($this->overrides[$moduleName])) {
             return $this->fs->exists($moduleName) ? $this->fs->get($moduleName) : null;
         }
