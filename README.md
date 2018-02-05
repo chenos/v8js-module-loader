@@ -15,7 +15,7 @@ composer require chenos/v8js-module-loader
 
 ## Dependents
 
-- [chenos/v8js-parser](https://github.com/chenos/v8js-parser)
+- [chenos/execjs](https://github.com/chenos/execjs)
 
 ## Testing
 
