@@ -47,7 +47,7 @@ class ModuleLoader
 
     public function addOverride($name, $override = null)
     {
-        if (func_num_args() == 1 && is_array($name)) {
+        if (is_array($name)) {
             $this->overrides = array_merge($this->overrides, $name);
         } elseif (func_num_args() == 2) {
             $this->overrides[$name] = $override;

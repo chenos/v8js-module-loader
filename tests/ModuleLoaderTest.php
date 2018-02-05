@@ -23,6 +23,22 @@ class ModuleLoaderTest extends TestCase
         $this->v8 = $v8;
     }
 
+    public function testAddOverride1()
+    {
+        $overrides = ['vue' => 'vue/dist/vue.js'];
+        $this->loader->addOverride($overrides);
+        $this->assertAttributeEquals($overrides, 'overrides', $this->loader);
+    }
+
+    public function testAddOverride2()
+    {
+        $overrides = ['vue' => 'vue/dist/vue.js'];
+        foreach ($overrides as $key => $value) {
+            $this->loader->addOverride($key, $value);
+        }
+        $this->assertAttributeEquals($overrides, 'overrides', $this->loader);
+    }
+
     public function testNestRequire()
     {
         $this->assertOutputEquals("require('./fn')();", 'hello1hello2');
