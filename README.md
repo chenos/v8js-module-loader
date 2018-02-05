@@ -51,7 +51,7 @@ $loader->addOverride('vue', 'vue/dist/vue.runtime.common.js');
 $loader->addOverride(['fn' => function (...$args) {}]);
 $loader->addOverride('obj', new stdClass());
 
-$loader->addVendorDirectory(__DIR__.'/node_modules', __DIR__.'/bower_components');
+$loader->addVendorDir(__DIR__.'/node_modules', __DIR__.'/bower_components');
 
 $v8 = new V8Js();
 

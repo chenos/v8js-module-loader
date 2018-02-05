@@ -14,35 +14,16 @@ class ModuleLoader
 
     protected $nativeModules = [];
 
-    protected $modulesDirectories = [];
+    protected $vendorDirs = [];
 
     protected $pathCache = [];
 
-    public function __construct($entryDir, FileSystemInterface $filesystem = null)
+    public function __construct($entryDir = null, FileSystemInterface $filesystem = null)
     {
-        $this->entryDir = $entryDir;
-        $this->fs = $filesystem instanceof FileSystemInterface ? $filesystem : new FileSystem();
-    }
-
-    public function setFileSystem($filesystem)
-    {
-        $this->fs = $filesystem;
-
-        return $this;
-    }
-
-    public function setEntryDirectory($entryDir)
-    {
-        $this->entryDir = $entryDir;
-
-        return $this;
-    }
-
-    public function setExtensions(...$extensions)
-    {
-        $this->extensions = $extensions;
-
-        return $this;
+        $this->setEntryDir($entryDir ?: getcwd());
+        $this->setFileSystem(
+            $filesystem instanceof FileSystemInterface 
+            ? $filesystem : new FileSystem());
     }
 
     public function addOverride($name, $override = null)
@@ -56,10 +37,31 @@ class ModuleLoader
         return $this;
     }
 
-    public function addVendorDirectory(...$modulesDirectories)
+    public function addVendorDir(...$vendorDirs)
     {
-        $this->modulesDirectories = array_merge(
-            $this->modulesDirectories, $modulesDirectories);
+        $this->vendorDirs = array_merge(
+            $this->vendorDirs, $vendorDirs);
+
+        return $this;
+    }
+
+    public function setEntryDir($entryDir)
+    {
+        $this->entryDir = $entryDir;
+
+        return $this;
+    }
+
+    public function setExtensions(...$extensions)
+    {
+        $this->extensions = $extensions;
+
+        return $this;
+    }
+
+    public function setFileSystem(FileSystemInterface $filesystem)
+    {
+        $this->fs = $filesystem;
 
         return $this;
     }
@@ -74,7 +76,7 @@ class ModuleLoader
         }
 
         if (strpos($moduleName, '.') !== 0 && strpos($moduleName, '/') !== 0) {
-            foreach ($this->modulesDirectories as $dir) {
+            foreach ($this->vendorDirs as $dir) {
                 if ($file = $this->getModuleFile($dir, $moduleName)) {
                     return [$this->fs->dirname($file), $this->fs->filename($file)];
                 }
@@ -98,13 +100,13 @@ class ModuleLoader
         return [$this->fs->dirname($file), $this->fs->filename($file)];
     }
 
-    public function loadModule($moduleName, $normalise = true)
+    public function loadModule($moduleName)
     {
-        if (! $normalise) {
-            $moduleName = implode('/', $this->normaliseIdentifier('', $moduleName));
-        }
-
         if (! isset($this->overrides[$moduleName])) {
+            if (strpos($moduleName, '/') !== 0) {
+                $moduleName = implode('/', $this->normaliseIdentifier('', $moduleName));
+            }
+        
             return $this->fs->exists($moduleName) ? $this->fs->get($moduleName) : null;
         }
 

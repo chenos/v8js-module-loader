@@ -13,7 +13,7 @@ class ModuleLoaderTest extends TestCase
         $this->loader = new ModuleLoader(__DIR__.'/javascript/entry');
 
         $this->loader->setExtensions('.js', '.json');
-        $this->loader->addVendorDirectory(__DIR__.'/javascript/node_modules');
+        $this->loader->addVendorDir(__DIR__.'/javascript/node_modules');
 
         $v8 = new V8Js();
 

@@ -325,7 +325,7 @@ class NormaliseIdentifierTest extends TestCase
     public function testSetEntryDirectory()
     {
         $loader = new ModuleLoader('/app1');
-        $loader->setEntryDirectory('/app2');
+        $loader->setEntryDir('/app2');
         $this->assertAttributeEquals('/app2', 'entryDir', $loader);
     }
 
@@ -339,7 +339,7 @@ class NormaliseIdentifierTest extends TestCase
     protected function newModuleLoader($paths, $vendorDir = ['/node_modules'], $entryDir = '/app')
     {
         $loader = new ModuleLoader($entryDir, new FileSystem($paths));
-        $loader->addVendorDirectory(...$vendorDir);
+        $loader->addVendorDir(...$vendorDir);
 
         return $loader;
     }

@@ -8,7 +8,7 @@ $loader = new ModuleLoader(__DIR__);
 
 $loader->setExtensions('.js', '.json');
 $loader->addOverride('vue', 'vue/dist/vue.runtime.common.js');
-$loader->addVendorDirectory(__DIR__.'/node_modules');
+$loader->addVendorDir(__DIR__.'/node_modules');
 
 $v8 = new V8Js();
 
