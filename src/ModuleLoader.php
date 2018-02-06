@@ -94,7 +94,7 @@ class ModuleLoader
         }
 
         if (! $file) {
-            throw new FileNotFoundException("'$moduleName' module does not exists.");
+            throw new ModuleNotFoundException("Cannot find module '$moduleName'");
         }
 
         return [$this->fs->dirname($file), $this->fs->filename($file)];
@@ -134,13 +134,15 @@ class ModuleLoader
             }
         }
 
-        if ($this->fs->exists($fullPath = $this->fs->pathJoin($path, 'index.js'))) {
-            return $this->pathCache[$path] = $fullPath;
-        }
-
         foreach ($this->extensions as $extension) {
             if ($this->fs->exists($path.$extension)) {
                 return $this->pathCache[$path] = $path.$extension;
+            }
+        }
+
+        foreach ($this->extensions as $extension) {
+            if ($this->fs->exists("{$path}/index{$extension}")) {
+                return $this->pathCache[$path] = "{$path}/index{$extension}";
             }
         }
 

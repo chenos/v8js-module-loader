@@ -4,7 +4,7 @@ namespace Chenos\V8Js\ModuleLoader\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Chenos\V8Js\ModuleLoader\ModuleLoader;
-use Chenos\V8Js\ModuleLoader\FileNotFoundException;
+use Chenos\V8Js\ModuleLoader\ModuleNotFoundException;
 
 class NormaliseIdentifierTest extends TestCase
 {
@@ -87,9 +87,11 @@ class NormaliseIdentifierTest extends TestCase
         $loader = $this->newModuleLoader([
             '/app/foo/bar/main' => false,
             '/app/foo/bar/main.js' => '',
-            '/app/foo/bar/main/index.js' => '',
-            '/app/foo/bar/main/dist/foo.js' => '',
+            '/app/foo/bar/main.json' => '',
             '/app/foo/bar/main/package.json' => '{"main": "dist/foo.js"}',
+            '/app/foo/bar/main/dist/foo.js' => '',
+            '/app/foo/bar/main/index.js' => '',
+            '/app/foo/bar/main/index.json' => '',
         ]);
 
         $this->assertExamples($loader, [
@@ -110,7 +112,86 @@ class NormaliseIdentifierTest extends TestCase
         $loader = $this->newModuleLoader([
             '/app/foo/bar/main' => false,
             '/app/foo/bar/main.js' => '',
+            '/app/foo/bar/main.json' => '',
+            '/app/foo/bar/main/package.json' => '{}',
+            '/app/foo/bar/main/dist/foo.js' => '',
             '/app/foo/bar/main/index.js' => '',
+            '/app/foo/bar/main/index.json' => '',
+        ]);
+
+        $this->assertExamples($loader, [
+            ['', './foo/bar/main', '/app/foo/bar', 'main.js'],
+            ['./foo', './bar/main', '/app/foo/bar', 'main.js'],
+            ['./foo/bar', './main', '/app/foo/bar', 'main.js'],
+            ['/app', './foo/bar/main', '/app/foo/bar', 'main.js'],
+            ['/app/foo', './bar/main', '/app/foo/bar', 'main.js'],
+            ['/app/foo/bar', './main', '/app/foo/bar', 'main.js'],
+        ]);
+    }
+
+    /**
+     * @group priority
+     */
+    public function testPriority3()
+    {
+        $loader = $this->newModuleLoader([
+            '/app/foo/bar/main' => false,
+            '/app/foo/bar/main.js' => '',
+            '/app/foo/bar/main.json' => '',
+            // '/app/foo/bar/main/package.json' => '{}',
+            '/app/foo/bar/main/dist/foo.js' => '',
+            '/app/foo/bar/main/index.js' => '',
+            '/app/foo/bar/main/index.json' => '',
+        ]);
+
+        $this->assertExamples($loader, [
+            ['', './foo/bar/main', '/app/foo/bar', 'main.js'],
+            ['./foo', './bar/main', '/app/foo/bar', 'main.js'],
+            ['./foo/bar', './main', '/app/foo/bar', 'main.js'],
+            ['/app', './foo/bar/main', '/app/foo/bar', 'main.js'],
+            ['/app/foo', './bar/main', '/app/foo/bar', 'main.js'],
+            ['/app/foo/bar', './main', '/app/foo/bar', 'main.js'],
+        ]);
+    }
+
+    /**
+     * @group priority
+     */
+    public function testPriority4()
+    {
+        $loader = $this->newModuleLoader([
+            '/app/foo/bar/main' => false,
+            // '/app/foo/bar/main.js' => '',
+            '/app/foo/bar/main.json' => '',
+            // '/app/foo/bar/main/package.json' => '{}',
+            '/app/foo/bar/main/dist/foo.js' => '',
+            '/app/foo/bar/main/index.js' => '',
+            '/app/foo/bar/main/index.json' => '',
+        ]);
+
+        $this->assertExamples($loader, [
+            ['', './foo/bar/main', '/app/foo/bar', 'main.json'],
+            ['./foo', './bar/main', '/app/foo/bar', 'main.json'],
+            ['./foo/bar', './main', '/app/foo/bar', 'main.json'],
+            ['/app', './foo/bar/main', '/app/foo/bar', 'main.json'],
+            ['/app/foo', './bar/main', '/app/foo/bar', 'main.json'],
+            ['/app/foo/bar', './main', '/app/foo/bar', 'main.json'],
+        ]);
+    }
+
+    /**
+     * @group priority
+     */
+    public function testPriority5()
+    {
+        $loader = $this->newModuleLoader([
+            '/app/foo/bar/main' => false,
+            // '/app/foo/bar/main.js' => '',
+            // '/app/foo/bar/main.json' => '',
+            // '/app/foo/bar/main/package.json' => '{}',
+            '/app/foo/bar/main/dist/foo.js' => '',
+            '/app/foo/bar/main/index.js' => '',
+            '/app/foo/bar/main/index.json' => '',
         ]);
 
         $this->assertExamples($loader, [
@@ -121,6 +202,49 @@ class NormaliseIdentifierTest extends TestCase
             ['/app/foo', './bar/main', '/app/foo/bar/main', 'index.js'],
             ['/app/foo/bar', './main', '/app/foo/bar/main', 'index.js'],
         ]);
+    }
+
+    /**
+     * @group priority
+     */
+    public function testPriority6()
+    {
+        $loader = $this->newModuleLoader([
+            '/app/foo/bar/main' => false,
+            // '/app/foo/bar/main.js' => '',
+            // '/app/foo/bar/main.json' => '',
+            // '/app/foo/bar/main/package.json' => '{}',
+            // '/app/foo/bar/main/dist/foo.js' => '',
+            // '/app/foo/bar/main/index.js' => '',
+            '/app/foo/bar/main/index.json' => '',
+        ]);
+
+        $this->assertExamples($loader, [
+            ['', './foo/bar/main', '/app/foo/bar/main', 'index.json'],
+            ['./foo', './bar/main', '/app/foo/bar/main', 'index.json'],
+            ['./foo/bar', './main', '/app/foo/bar/main', 'index.json'],
+            ['/app', './foo/bar/main', '/app/foo/bar/main', 'index.json'],
+            ['/app/foo', './bar/main', '/app/foo/bar/main', 'index.json'],
+            ['/app/foo/bar', './main', '/app/foo/bar/main', 'index.json'],
+        ]);
+    }
+
+
+    public function testPriority7()
+    {
+        $this->expectException(ModuleNotFoundException::class);
+
+        $loader = $this->newModuleLoader([
+            '/app/foo/bar/main' => false,
+            // '/app/foo/bar/main.js' => '',
+            // '/app/foo/bar/main.json' => '',
+            // '/app/foo/bar/main/package.json' => '{}',
+            // '/app/foo/bar/main/dist/foo.js' => '',
+            // '/app/foo/bar/main/index.js' => '',
+            // '/app/foo/bar/main/index.json' => '',
+        ]);
+
+        $loader->loadModule('./foo/bar/main');
     }
 
     /**
@@ -296,9 +420,9 @@ class NormaliseIdentifierTest extends TestCase
         ]);
 
         $this->assertEquals('foo', $loader->loadModule('/app/foo.js'));
-        $this->assertEquals('foo', $loader->loadModule('./foo.js', false));
+        $this->assertEquals('foo', $loader->loadModule('./foo.js'));
         $this->assertEquals('bar', $loader->loadModule('/app/bar.js'));
-        $this->assertEquals('bar', $loader->loadModule('./bar.js', false));
+        $this->assertEquals('bar', $loader->loadModule('./bar.js'));
     }
 
     public function testLoadModuleException()
@@ -308,16 +432,15 @@ class NormaliseIdentifierTest extends TestCase
             '/app/bar.js' => 'bar',
         ]);
 
-        $this->expectException(FileNotFoundException::class);
-        $this->expectExceptionMessage("'./baz.js' module does not exists.");
-
-        $this->assertFalse($loader->loadModule('./baz.js', false));
+        $this->expectException(ModuleNotFoundException::class);
+        $this->expectExceptionMessage("Cannot find module './baz.js'");
+        $this->assertFalse($loader->loadModule('./baz.js'));
     }
 
     public function testException()
     {
-        $this->expectException(FileNotFoundException::class);
-        $this->expectExceptionMessage("'./app' module does not exists.");
+        $this->expectException(ModuleNotFoundException::class);
+        $this->expectExceptionMessage("Cannot find module './app'");
         $loader = $this->newModuleLoader([]);
         $loader->normaliseIdentifier('', './app');
     }
