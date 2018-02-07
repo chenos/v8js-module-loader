@@ -1,6 +1,6 @@
 <?php
 
-namespace Chenos\V8Js\ModuleLoader;
+namespace Chenos\V8JsModuleLoader;
 
 interface FileSystemInterface
 {

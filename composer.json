@@ -9,12 +9,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Chenos\\V8Js\\ModuleLoader\\": "src"
+            "Chenos\\V8JsModuleLoader\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Chenos\\V8Js\\ModuleLoader\\Tests\\": "tests"
+            "Chenos\\V8JsModuleLoader\\Tests\\": "tests"
         }
     },
     "scripts": {

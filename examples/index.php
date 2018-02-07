@@ -2,7 +2,7 @@
 
 require __DIR__.'/../vendor/autoload.php';
 
-use Chenos\V8Js\ModuleLoader\ModuleLoader;
+use Chenos\V8JsModuleLoader\ModuleLoader;
 
 $loader = new ModuleLoader(__DIR__);
 

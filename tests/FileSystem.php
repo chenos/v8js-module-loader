@@ -1,8 +1,8 @@
 <?php
 
-namespace Chenos\V8Js\ModuleLoader\Tests;
+namespace Chenos\V8JsModuleLoader\Tests;
 
-class FileSystem extends \Chenos\V8Js\ModuleLoader\FileSystem
+class FileSystem extends \Chenos\V8JsModuleLoader\FileSystem
 {
     protected $paths = [];
 

@@ -34,12 +34,14 @@ Access http://127.0.0.1:8888
 ## Usage
 
 ```php
-use Chenos\V8Js\ModuleLoader\ModuleLoader;
+use Chenos\V8JsModuleLoader\ModuleLoader;
 
 // entry directory
 $loader = new ModuleLoader(__DIR__);
 
 $loader->setExtensions('.js', '.json');
+
+$loader->setEntryDir(__DIR__);
 
 // array
 $loader->addOverride(['vue' => 'vue/dist/vue.runtime.common.js']);

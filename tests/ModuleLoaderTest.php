@@ -1,10 +1,10 @@
 <?php
 
-namespace Chenos\V8Js\ModuleLoader\Tests;
+namespace Chenos\V8JsModuleLoader\Tests;
 
 use V8Js;
 use PHPUnit\Framework\TestCase;
-use Chenos\V8Js\ModuleLoader\ModuleLoader;
+use Chenos\V8JsModuleLoader\ModuleLoader;
 
 class ModuleLoaderTest extends TestCase
 {
